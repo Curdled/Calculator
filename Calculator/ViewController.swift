@@ -17,43 +17,62 @@ class ViewController: UIViewController {
   
   var operandStack = Array<Double>()
   
+  @IBOutlet weak var historyPanel: UILabel!
  
   @IBAction func appendDigit(sender: UIButton) {
     let digit = sender.currentTitle!
     if userIsInTheMiddleOfTypingANumber{
       if digit == "." && display.text!.rangeOfString(".") != nil{
+        //makes sure that multiple dot cannot be inputted.
         return
       }
+      historyPanel.text = historyPanel.text! + "\n\(digit)"
       display.text = display.text! + digit
       
     } else {
       if digit != "0" {
         display.text = digit
+        historyPanel.text = historyPanel.text! + "\n\(digit)"
         userIsInTheMiddleOfTypingANumber = true
       }
     }
   }
   
+  @IBAction func clear() {
+    historyPanel.text = ""
+    historyPanel.text = ""
+    operandStack.removeAll(keepCapacity: false)
+    displayValue = 0
+    userIsInTheMiddleOfTypingANumber = false
+  }
+  
   @IBAction func enter() {
+    historyPanel.text = historyPanel.text! + "\n⏎"
+    pressEnter()
+  }
+  
+  func pressEnter() {
     operandStack.append(displayValue)
     userIsInTheMiddleOfTypingANumber = false
     println("op stack = \(operandStack)")
+
   }
   
   @IBAction func operate(sender: UIButton) {
     let operation = sender.currentTitle!
     if(userIsInTheMiddleOfTypingANumber){
-      enter()
+      pressEnter()
     }
+    historyPanel.text = historyPanel.text! + "\n\(operation)"
     switch operation{
-      case "✕": performOperation { $0 * $1 }
-      case "÷": performOperation { $1 / $0 }
-      case "+": performOperation { $0 * $1 }
-      case "−": performOperation { $1 - $0 }
-      case "√": performOperation { sqrt($0) }
+      case "✕":   performOperation { $0 * $1 }
+      case "÷":   performOperation { $1 / $0 }
+      case "+":   performOperation { $0 * $1 }
+      case "−":   performOperation { $1 - $0 }
+      case "√":   performOperation { sqrt($0) }
       case "cos": performOperation { cos($0) }
       case "sin": performOperation { sin($0) }
-      case "π": performOperation { M_PI }
+      case "π":   performOperation { M_PI }
     default: break
     }
   }
@@ -61,20 +80,20 @@ class ViewController: UIViewController {
   private func performOperation(op: (Double, Double) -> Double){
     if operandStack.count >= 2 {
       displayValue = op(operandStack.removeLast(), operandStack.removeLast())
-      enter()
+      pressEnter()
     }
   }
 
   private func performOperation(op: Double -> Double){
   if operandStack.count >= 1 {
     displayValue = op(operandStack.removeLast())
-    enter()
+    pressEnter()
   }
 }
 
   private func performOperation(op: () -> Double){
       displayValue = op()
-      enter()
+      pressEnter()
   }
   
   var displayValue: Double{
