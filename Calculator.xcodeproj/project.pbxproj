@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D84D09771B89D5BA00537F00 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84D09761B89D5BA00537F00 /* AppDelegate.swift */; };
 		D84D09791B89D5BA00537F00 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84D09781B89D5BA00537F00 /* ViewController.swift */; };
 		D84D097C1B89D5BA00537F00 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D84D097A1B89D5BA00537F00 /* Main.storyboard */; };
 		D84D097E1B89D5BA00537F00 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D84D097D1B89D5BA00537F00 /* Images.xcassets */; };
 		D84D09811B89D5BA00537F00 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D84D097F1B89D5BA00537F00 /* LaunchScreen.xib */; };
 		D84D098D1B89D5BA00537F00 /* CalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84D098C1B89D5BA00537F00 /* CalculatorTests.swift */; };
+		D84D09971B89DCE900537F00 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84D09961B89DCE900537F00 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,7 +28,6 @@
 /* Begin PBXFileReference section */
 		D84D09711B89D5BA00537F00 /* Calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D84D09751B89D5BA00537F00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D84D09761B89D5BA00537F00 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D84D09781B89D5BA00537F00 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D84D097B1B89D5BA00537F00 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D84D097D1B89D5BA00537F00 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -36,6 +35,7 @@
 		D84D09861B89D5BA00537F00 /* CalculatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalculatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D84D098B1B89D5BA00537F00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D84D098C1B89D5BA00537F00 /* CalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorTests.swift; sourceTree = "<group>"; };
+		D84D09961B89DCE900537F00 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,11 +77,8 @@
 		D84D09731B89D5BA00537F00 /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
-				D84D09761B89D5BA00537F00 /* AppDelegate.swift */,
 				D84D09781B89D5BA00537F00 /* ViewController.swift */,
 				D84D097A1B89D5BA00537F00 /* Main.storyboard */,
-				D84D097D1B89D5BA00537F00 /* Images.xcassets */,
-				D84D097F1B89D5BA00537F00 /* LaunchScreen.xib */,
 				D84D09741B89D5BA00537F00 /* Supporting Files */,
 			);
 			path = Calculator;
@@ -90,6 +87,9 @@
 		D84D09741B89D5BA00537F00 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D84D097F1B89D5BA00537F00 /* LaunchScreen.xib */,
+				D84D097D1B89D5BA00537F00 /* Images.xcassets */,
+				D84D09961B89DCE900537F00 /* AppDelegate.swift */,
 				D84D09751B89D5BA00537F00 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -212,8 +212,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D84D09971B89DCE900537F00 /* AppDelegate.swift in Sources */,
 				D84D09791B89D5BA00537F00 /* ViewController.swift in Sources */,
-				D84D09771B89D5BA00537F00 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
