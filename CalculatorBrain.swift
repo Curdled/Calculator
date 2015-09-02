@@ -79,6 +79,10 @@ class CalculatorBrain {
         }
         return (nil, ops)
     }
+
+    func clear() {
+        opStack.removeAll()
+    }
     
     func evaluate() -> Double? {
         let (result, remainder) =  evaluate(opStack)
