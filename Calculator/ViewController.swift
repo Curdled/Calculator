@@ -14,8 +14,8 @@ class ViewController: UIViewController {
   
   var userIsInTheMiddleOfTypingANumber = false
   
-  
-  var operandStack = Array<Double>()
+  var brain = CalculatorBrain()
+    
   
   @IBOutlet weak var historyPanel: UILabel!
  
@@ -41,7 +41,7 @@ class ViewController: UIViewController {
   @IBAction func clear() {
     historyPanel.text = ""
     historyPanel.text = ""
-    operandStack.removeAll(keepCapacity: false)
+
     displayValue = 0
     userIsInTheMiddleOfTypingANumber = false
   }
@@ -52,9 +52,12 @@ class ViewController: UIViewController {
   }
   
   func pressEnter() {
-    operandStack.append(displayValue)
     userIsInTheMiddleOfTypingANumber = false
-    println("op stack = \(operandStack)")
+    if let result = brain.pushOperand(displayValue) {
+        displayValue = result
+    } else {
+        displayValue = 0
+    }
 
   }
   
@@ -63,40 +66,18 @@ class ViewController: UIViewController {
     if(userIsInTheMiddleOfTypingANumber){
       pressEnter()
     }
-    historyPanel.text = historyPanel.text! + "\n\(operation)"
-    switch operation{
-      case "✕":   performOperation { $0 * $1 }
-      case "÷":   performOperation { $1 / $0 }
-      case "+":   performOperation { $0 * $1 }
-      case "−":   performOperation { $1 - $0 }
-      case "√":   performOperation { sqrt($0) }
-      case "cos": performOperation { cos($0) }
-      case "sin": performOperation { sin($0) }
-      case "π":   performOperation { M_PI }
-    default: break
+    if let operation = sender.currentTitle {
+        if let result = brain.performOperation(operation) {
+            displayValue = result
+        } else {
+            displayValue = 0
+        }
     }
+
   }
   
-  private func performOperation(op: (Double, Double) -> Double){
-    if operandStack.count >= 2 {
-      displayValue = op(operandStack.removeLast(), operandStack.removeLast())
-      pressEnter()
-    }
-  }
-
-  private func performOperation(op: Double -> Double){
-  if operandStack.count >= 1 {
-    displayValue = op(operandStack.removeLast())
-    pressEnter()
-  }
-}
-
-  private func performOperation(op: () -> Double){
-      displayValue = op()
-      pressEnter()
-  }
   
-  var displayValue: Double{
+  var displayValue: Double {
     get{
       return NSNumberFormatter().numberFromString(display.text!)!.doubleValue
     }
