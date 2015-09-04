@@ -12,12 +12,44 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var display: UILabel!
 
+    @IBOutlet weak var discriptionPanel: UILabel!
+    
     var userIsInTheMiddleOfTypingANumber = false
 
     var brain = CalculatorBrain()
 
-    @IBOutlet weak var historyPanel: UILabel!
+ 
+    @IBAction func setMemory() {
+        if let value =  displayValue {
+            brain.variableValues["M"] = value
+        }
+        userIsInTheMiddleOfTypingANumber = false
+        displayValue = brain.evaluate()
+        display.text = "=" + display.text!
+    }
 
+    @IBAction func pushMemory() {
+        brain.pushOperand("M")
+        enter()
+    }
+    
+    @IBAction func undo() {
+        if userIsInTheMiddleOfTypingANumber {
+            let displayText = display.text!
+            if count(displayText) == 1 {
+                display.text! = " "
+            }
+            else if(count(displayText) > 1) {
+                display.text! = dropLast(displayText)
+            }
+        }
+        else {
+            brain.removeLast()
+            userIsInTheMiddleOfTypingANumber = true
+            enter()
+        }
+    }
+    
     @IBAction func appendDigit(sender: UIButton) {
         let digit = sender.currentTitle!
         if userIsInTheMiddleOfTypingANumber{
@@ -25,64 +57,58 @@ class ViewController: UIViewController {
                //makes sure that multiple dot cannot be inputted.
                return
            }
-           historyPanel.text = historyPanel.text! + "\n\(digit)"
            display.text = display.text! + digit
-
         }
         else {
            if digit != "0" {
                display.text = digit
-               historyPanel.text = historyPanel.text! + "\n\(digit)"
                userIsInTheMiddleOfTypingANumber = true
            }
         }
     }
 
     @IBAction func clear() {
-        historyPanel.text = ""
-        historyPanel.text = ""
-
+        discriptionPanel.text = " "
         displayValue = 0
         userIsInTheMiddleOfTypingANumber = false
         brain.clear();
     }
 
     @IBAction func enter() {
-        historyPanel.text = historyPanel.text! + "\n⏎"
-        pressEnter()
-    }
-
-    func pressEnter() {
-        userIsInTheMiddleOfTypingANumber = false
-        if let displayValueInt = displayValue{
-            if let result = brain.pushOperand(displayValueInt) {
-                displayValue = result
+        if userIsInTheMiddleOfTypingANumber {
+            userIsInTheMiddleOfTypingANumber = false
+            if let displayValueInt = displayValue {
+                if let result = brain.pushOperand(displayValueInt) {
+                    displayValue = result
+                } else {
+                    displayValue = nil
+                }
             }
-            else {
-                displayValue = nil
-            }
+            discriptionPanel.text = "\(brain)"
         }
-
     }
+
+    
 
     @IBAction func operate(sender: UIButton) {
         let operation = sender.currentTitle!
         if(userIsInTheMiddleOfTypingANumber){
-            pressEnter()
+            enter()
         }
         if let operation = sender.currentTitle {
             if let result = brain.performOperation(operation) {
                 displayValue = result
+                display.text = "=" + display.text!
             } else {
                 displayValue = nil
             }
         }
-
+        discriptionPanel.text = "\(brain)"
     }
 
 
     var displayValue: Double? {
-        get{
+        get {
             if let number =  NSNumberFormatter().numberFromString(display.text!){
                 return number.doubleValue
             }
@@ -98,6 +124,5 @@ class ViewController: UIViewController {
             userIsInTheMiddleOfTypingANumber = false
         }
       }
-
     }
 

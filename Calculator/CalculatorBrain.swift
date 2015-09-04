@@ -8,7 +8,7 @@
 
 import Foundation
 
-class CalculatorBrain {
+class CalculatorBrain : Printable{
     
     private enum Op : Printable{
         case Operand(Double)
@@ -25,7 +25,7 @@ class CalculatorBrain {
                 case .Variable(let symbol):
                     return symbol
                 case .UnaryOperation(let symbol, _):
-                        return symbol
+                     return symbol
                 case .BinaryOperation(let symbol, _):
                     return symbol
                 case .NullaryOperation(let symbol, _):
@@ -40,6 +40,58 @@ class CalculatorBrain {
     private var knownOps = [String:Op]()
 
     var variableValues = [String:Double]()
+
+    var description: String {
+        return discHelp(description(opStack))
+    }
+
+    private func discHelp(input:(String?, [Op])) -> String{
+        if let value = input.0{
+            if input.1.isEmpty{
+              return value
+            }
+            return discHelp(description(input.1)) + ", " + value
+        }
+        return ""
+    }
+
+    private func description(ops: [Op]) -> (result: String?, remainingOps: [Op] ) {
+        if !ops.isEmpty{
+            var remainingOps = ops
+            let op = remainingOps.removeLast()
+            switch op {
+                case .Operand(let operand):
+                    return ("\(operand)", remainingOps)
+                case .Variable(let symbol):
+                    return (symbol, remainingOps)
+                case .NullaryOperation(let symbol, _):
+                    return (symbol, remainingOps)
+                case .UnaryOperation(let symbol, _):
+                    let opDisc = description(remainingOps)
+                    if let value = opDisc.result{
+                        return (symbol + "(" + value + ")", opDisc.remainingOps)
+                    }
+                    else {
+                        return (symbol + "(?)", ops)
+                    }
+                case .BinaryOperation(let symbol, _):
+                    let op1Disc = description(remainingOps)
+                    if let value1 = op1Disc.result {
+                        let op2Disc = description(op1Disc.remainingOps)
+                        if let value2 = op2Disc.result{
+                            return ("(" + value2 + symbol + value1 + ")", op2Disc.remainingOps)
+                        }
+                        else {
+                            return ("(?" + symbol + value1 + ")", op2Disc.remainingOps)
+                        }
+                    }
+                     else {
+                        return ("(?" + symbol + "?)", op1Disc.remainingOps)
+                    }
+            }
+        }
+        return (nil, ops)
+    }
 
     
     init() {
@@ -90,14 +142,20 @@ class CalculatorBrain {
         }
         return (nil, ops)
     }
+    
+    func removeLast(){
+        opStack.removeLast()
+    }
 
     func clear() {
         opStack.removeAll()
+        variableValues.removeAll()
     }
     
     func evaluate() -> Double? {
         let (result, remainder) =  evaluate(opStack)
         println("\(opStack) = \(result) with \(remainder) left over")
+        println(self)
         return result
     }
   
