@@ -55,11 +55,13 @@ class ViewController: UIViewController {
 
     func pressEnter() {
         userIsInTheMiddleOfTypingANumber = false
-        if let result = brain.pushOperand(displayValue) {
-            displayValue = result
-        }
-        else {
-            displayValue = 0
+        if let displayValueInt = displayValue{
+            if let result = brain.pushOperand(displayValueInt) {
+                displayValue = result
+            }
+            else {
+                displayValue = nil
+            }
         }
 
     }
@@ -73,19 +75,27 @@ class ViewController: UIViewController {
             if let result = brain.performOperation(operation) {
                 displayValue = result
             } else {
-                displayValue = 0
+                displayValue = nil
             }
         }
 
     }
 
 
-    var displayValue: Double {
+    var displayValue: Double? {
         get{
-            return NSNumberFormatter().numberFromString(display.text!)!.doubleValue
+            if let number =  NSNumberFormatter().numberFromString(display.text!){
+                return number.doubleValue
+            }
+            return nil
         }
         set {
-            display.text = "\(newValue)"
+            if let value = newValue {
+              display.text = "\(value)"
+            }
+            else {
+                display.text = "nil"
+            }
             userIsInTheMiddleOfTypingANumber = false
         }
       }
