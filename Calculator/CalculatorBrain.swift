@@ -24,13 +24,13 @@ class CalculatorBrain : Printable{
                     return "\(operand)"
                 case .Variable(let symbol):
                     return symbol
+                case .NullaryOperation(let symbol, _):
+                    return symbol
+                }
                 case .UnaryOperation(let symbol, _):
                      return symbol
                 case .BinaryOperation(let symbol, _):
                     return symbol
-                case .NullaryOperation(let symbol, _):
-                    return symbol
-                }
             }
         }
     }
