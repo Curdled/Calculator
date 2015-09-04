@@ -16,7 +16,6 @@ class ViewController: UIViewController {
 
     var brain = CalculatorBrain()
 
-
     @IBOutlet weak var historyPanel: UILabel!
 
     @IBAction func appendDigit(sender: UIButton) {
