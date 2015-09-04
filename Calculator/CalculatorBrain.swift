@@ -26,7 +26,6 @@ class CalculatorBrain : Printable{
                     return symbol
                 case .NullaryOperation(let symbol, _):
                     return symbol
-
                 case .UnaryOperation(let symbol, _):
                      return symbol
                 case .BinaryOperation(let symbol, _):
