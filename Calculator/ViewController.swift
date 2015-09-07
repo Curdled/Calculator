@@ -69,7 +69,7 @@ class ViewController: UIViewController {
 
     @IBAction func clear() {
         discriptionPanel.text = " "
-        displayValue = 0
+        displayValue = nil
         userIsInTheMiddleOfTypingANumber = false
         brain.clear();
     }
@@ -83,6 +83,7 @@ class ViewController: UIViewController {
         } else {
             displayValue = brain.evaluate()
         }
+        display.text = "=" + display.text!
         discriptionPanel.text = "\(brain)"
     }
 
