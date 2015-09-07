@@ -138,7 +138,6 @@ class CalculatorBrain : Printable{
                         return (operation(operand1, operand2), op2Eval.remainingOps)
                     }
                 }
-
             }
         }
         return (nil, ops)
@@ -156,12 +155,12 @@ class CalculatorBrain : Printable{
     }
     
     func evaluate() -> Double? {
-        let (result, remainder) =  evaluate(opStack)
+        let (result, remainder) = evaluate(opStack)
         println("\(opStack) = \(result) with \(remainder) left over")
         println(self)
         return result
     }
-  
+
     func pushOperand(operand: Double) -> Double? {
         opStack.append(Op.Operand(operand))
         return evaluate()
