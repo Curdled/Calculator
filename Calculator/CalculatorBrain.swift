@@ -47,10 +47,11 @@ class CalculatorBrain : Printable{
 
     private func discHelp(input:(String?, [Op])) -> String{
         if let value = input.0{
-            if input.1.isEmpty{
+            let ops =  input.1
+            if ops.isEmpty{
               return value
             }
-            return discHelp(description(input.1)) + ", " + value
+            return discHelp(description(ops)) + ", " + value
         }
         return ""
     }
@@ -144,7 +145,9 @@ class CalculatorBrain : Printable{
     }
     
     func removeLast(){
-        opStack.removeLast()
+        if opStack.count > 0 {
+            opStack.removeLast()
+        }
     }
 
     func clear() {

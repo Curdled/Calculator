@@ -38,6 +38,7 @@ class ViewController: UIViewController {
             let displayText = display.text!
             if count(displayText) == 1 {
                 display.text! = " "
+                userIsInTheMiddleOfTypingANumber = false
             }
             else if(count(displayText) > 1) {
                 display.text! = dropLast(displayText)
@@ -45,7 +46,6 @@ class ViewController: UIViewController {
         }
         else {
             brain.removeLast()
-            userIsInTheMiddleOfTypingANumber = true
             enter()
         }
     }
@@ -78,14 +78,12 @@ class ViewController: UIViewController {
         if userIsInTheMiddleOfTypingANumber {
             userIsInTheMiddleOfTypingANumber = false
             if let displayValueInt = displayValue {
-                if let result = brain.pushOperand(displayValueInt) {
-                    displayValue = result
-                } else {
-                    displayValue = nil
-                }
+                displayValue = brain.pushOperand(displayValueInt)
             }
-            discriptionPanel.text = "\(brain)"
+        } else {
+            displayValue = brain.evaluate()
         }
+        discriptionPanel.text = "\(brain)"
     }
 
     
