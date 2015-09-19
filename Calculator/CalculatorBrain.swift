@@ -73,7 +73,7 @@ class CalculatorBrain : Printable{
                         return (symbol + "(" + value + ")", opDisc.remainingOps)
                     }
                     else {
-                        return (symbol + "(?)", ops)
+                        return (symbol + "(?)", remainingOps)
                     }
                 case .BinaryOperation(let symbol, _):
                     let op1Disc = description(remainingOps)
