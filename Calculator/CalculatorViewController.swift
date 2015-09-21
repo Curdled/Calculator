@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class CalculatorViewController: UIViewController {
 
     @IBOutlet weak var display: UILabel!
 
@@ -18,6 +18,21 @@ class ViewController: UIViewController {
 
     var brain = CalculatorBrain()
 
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        var destination = segue.destinationViewController as? UIViewController
+        if let navCon = destination as? UINavigationController {
+            destination = navCon.visibleViewController
+        }
+        if let gvc = destination as? GraphViewController {
+            let brainCopy = CalculatorBrain()
+            brainCopy.program = brain.program
+            gvc.brainCopy = brainCopy
+            let discription = brain.description
+            let finalValue = split(discription) { $0 == "," }.last
+            println(finalValue)
+            gvc.graphTitleLabel.title = finalValue
+        }
+    }
  
     @IBAction func setMemory() {
         if let value =  displayValue {
