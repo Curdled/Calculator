@@ -17,30 +17,22 @@ protocol xyGraphDataSource : class {
 class CustomGraphView : UIView {
     
     var delegate: xyGraphDataSource?
-    
-    private let defaults = NSUserDefaults.standardUserDefaults()
-    
-    struct Constants {
-        static let OffsetValue = "CustomGraphView.OffsetValue"
-        static let ScaleValue = "CustomGraphView.ScaleValue"
-    }
-    
-    var offset: CGPoint {
-        get {
-            if let string = defaults.objectForKey(Constants.OffsetValue) as? String {
-                return CGPointFromString(string)
-            }
-            return CGPoint(x: 0, y: 0)
-        }
-        set {
-            defaults.setObject(NSStringFromCGPoint(newValue), forKey: Constants.OffsetValue)
-            setNeedsDisplay()
-        }
-    }
 
     var middle: CGPoint {
         let point = convertPoint(center, fromView: superview)
         return CGPoint(x: point.x + offset.x, y: point.y + offset.y)
+    }
+    
+    @IBInspectable var scale = CGFloat(1.0) {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
+    @IBInspectable var offset = CGPoint(x: 0, y: 0) {
+        didSet {
+            setNeedsDisplay()
+        }
     }
     
 
@@ -50,17 +42,7 @@ class CustomGraphView : UIView {
             setNeedsDisplay()
         }
     }
-    
-    @IBInspectable var scale: CGFloat {
-        get {
-            return CGFloat(defaults.floatForKey(Constants.ScaleValue))
-        }
-        set {
-            defaults.setFloat(Float(newValue), forKey: Constants.ScaleValue)
-            setNeedsDisplay()
-        }
-    }
-    
+        
     var graphCenter: CGPoint {
         return convertPoint(center, fromView: superview)
     }
@@ -110,33 +92,5 @@ class CustomGraphView : UIView {
     
     func convertCoordToPoint(point: CGPoint) -> CGPoint {
         return CGPoint(x: 0, y: 0)
-    }
-    
-    func pan(gesture: UIPanGestureRecognizer) {
-        switch gesture.state {
-        case .Ended: fallthrough
-        case .Changed:
-            let translation =  gesture.translationInView(self)
-            offset = CGPoint(x: offset.x + translation.x, y: offset.y + translation.y)
-            gesture.setTranslation(CGPointZero, inView: self)
-        default: break
-        }
-    }
-    
-    func pinch(gesture: UIPinchGestureRecognizer) {
-        switch gesture.state {
-        case .Changed:
-            scale *= gesture.scale
-            gesture.scale = 1.0
-        default: break
-        }
-    }
-    
-    func doubleTap(gesture: UITapGestureRecognizer) {
-        if gesture.state == .Ended {
-            let pos = gesture.locationInView(self)
-            let cent = convertPoint(center, fromView: superview)
-            offset = CGPoint(x: pos.x - cent.x, y: pos.y - cent.y)
-        }
     }
 }
